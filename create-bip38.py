@@ -27,7 +27,7 @@ if not wif:
     #randomkey = binascii.hexlify(os.urandom(32)).decode()
     wif = encode_privkey(random_key(), 'wif') #private key (WIF)
     print("* generated new key *")
-    if verbose: print ("wif: " +wif)
+if verbose: print ("wif: " +wif)
 
 addr = privtoaddr(wif)
 if verbose: print ("addr :"+addr)
@@ -48,7 +48,7 @@ if pasw != pasw2:
 
 #encrypt
 bip = bip38_encrypt(wif, pasw)
-if verbose: print ("bip: "+ str(bip))
+#if verbose: print ("bip: "+ str(bip))
 
 print (" ")
 print ('Enter passphrase hint (recommended):')
