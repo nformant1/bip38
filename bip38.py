@@ -9,35 +9,75 @@ import binascii
 import base58
 
 def bip38_encrypt(privkey,passphrase):
+    #print("lets encrypt something")
     '''BIP0038 non-ec-multiply encryption. Returns BIP0038 encrypted privkey.'''
     privformat = get_privkey_format(privkey)
+    #print (privformat)
     if privformat in ['wif_compressed','hex_compressed']:
         compressed = True
         flagbyte = b'\xe0'
+        #print ("i am compressed")
         if privformat == 'wif_compressed':
             privkey = encode_privkey(privkey,'hex_compressed')
             privformat = get_privkey_format(privkey)
     if privformat in ['wif', 'hex']:
         compressed = False
         flagbyte = b'\xc0'
+        #print ("i am UNcompressed")
     if privformat == 'wif':
         privkey = encode_privkey(privkey,'hex')
         privformat = get_privkey_format(privkey)
+    
     pubkey = privtopub(privkey)
     addr = pubtoaddr(pubkey)
+
+    #print ("pubkey")
+    #print (pubkey)
+
+    #print ("addr")
+    #print (addr)
+    
+    #print ("hashlib")
+    #print (hashlib.sha256(hashlib.sha256(addr.encode('utf-8')).digest()).hexdigest())
+
+
     addresshash = hashlib.sha256(hashlib.sha256(addr.encode('utf-8')).digest()).digest()[0:4]
+
+    #print("addresshash")
+    #print(addresshash)
+
+    #addresshash2 = hashlib.sha256(hashlib.sha256(addr.encode('utf-8')).digest()).hexdigest()
+    #addresshash2 = addresshash2[0:8]
+    #print("addresshash2")
+    #print(addresshash2[0:8])
+
+
     key = scrypt.hash(passphrase, addresshash, 16384, 8, 8)
+
+    #hashed_key = binascii.hexlify(key)
+    #print (hashed_key)
+
     derivedhalf1 = key[0:32]
+    #print("derivedhalf1")
+    #print(binascii.hexlify(derivedhalf1))
+
     derivedhalf2 = key[32:64]
-    aes = AES.new(derivedhalf2, 9) # If in doubt, use ``MODE_EAX``.
+
+    #print("derivedhalf2")
+    #print(binascii.hexlify(derivedhalf2))
+    aes = AES.new(derivedhalf2, 1) # from python2 /Crypto/Cipher/AES.py Default is `MODE_ECB`.
+    #print(aes)
     encryptedhalf1 = aes.encrypt(binascii.unhexlify('%0.32x' % (int(privkey[0:32], 16) ^ int(binascii.hexlify(derivedhalf1[0:16]), 16))))
+    #encryptedhalf1 = aes.encrypt(binascii.unhexlify('%0.32x' % (long(privkey[0:32], 16) ^ long(binascii.hexlify(derivedhalf1[0:16]), 16))))
+    
     encryptedhalf2 = aes.encrypt(binascii.unhexlify('%0.32x' % (int(privkey[32:64], 16) ^ int(binascii.hexlify(derivedhalf1[16:32]), 16))))
-    print ("flagbyte:       " + str(type(flagbyte)))
-    print (flagbyte)
+    #print ("flagbyte:       " + str(type(flagbyte)))
+    #print (flagbyte)
     #print ("addresshash:    " + str(type(addresshash)))
     #print ("encryptedhalf1: " + str(type(encryptedhalf1)))
+    #print (binascii.hexlify(encryptedhalf1))
     #print ("encryptedhalf2: " + str(type(encryptedhalf2)))
-
+    #print (encryptedhalf2)
     encrypted_privkey = (b'\x01\x42' + flagbyte + addresshash + encryptedhalf1 + encryptedhalf2)
     encrypted_privkey += hashlib.sha256(hashlib.sha256(encrypted_privkey).digest()).digest()[:4] # b58check for encrypted privkey
     encrypted_privkey = base58.b58encode(encrypted_privkey)
@@ -50,8 +90,8 @@ def bip38_decrypt(encrypted_privkey,passphrase):
     # Documentation from https://en.bitcoin.it/wiki/BIP_0038
 
     # 1. Collect encrypted private key and passphrase from user.
-    #print (encrypted_privkey)
-    #print (passphrase)
+    print (encrypted_privkey)
+    print (passphrase)
 
     unencoded_string = str(bytearray.fromhex( encrypted_privkey ))
     encoded_string= base58.b58encode(unencoded_string)
