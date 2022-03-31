@@ -1,5 +1,5 @@
 from operator import truediv
-import turtle
+#import turtle
 from bip38 import *
 from bitcoin import *
 from qrcode import *
@@ -7,30 +7,64 @@ from PIL import Image
 from PIL import ImageFont
 from PIL import ImageDraw
 import getpass
+from cryptos import *
+
 
 verbose = 1
-#if verbose: print ("hello world")
+
 
 print ("===============================================================")
 print (' BIP38 generator: Create paper wallet, encrypted with passphrase.')
 print ("===============================================================")
 
+check = 0
+while check == 0:
+    print (" ")
+    print ('Enter crypto currency (BTC, LTC, DOGE) you want to choose (default = BTC):')
+    currency = input().upper()
+    if currency in ['BTC', 'LTC', 'DOGE', '']:
+        check = 1
+    else:
+        print ("The currency \"" + currency + "\" wasn't found. Please use BTC, LTC or DOGE")
+
+if currency == '': currency = 'BTC'
+
+print (" ")
+print ('Do you want to use the testnet? (default = no):')
+testnet = input().upper()
+
 print (" ")
 print ('Enter description for this wallet (optional):')
 name = input()
+if currency == '': currency = 'no'
 
+# should be before that currency shit?
 print (" ")
 print ('Enter a WIF format private key (optional):')
 wif = input()
 
 if not wif:
     #randomkey = binascii.hexlify(os.urandom(32)).decode()
-    wif = encode_privkey(random_key(), 'wif') #private key (WIF)
-    print("* generated new key *")
-if verbose: print ("wif: " +wif)
+    if currency == 'BTC' and testnet[:1] == "Y":
+        c = Bitcoin(testnet=True)
+    if currency == 'BTC' and testnet[:1] != "Y":
+        c = Bitcoin(testnet=False)
+    if currency == 'LTC' and testnet[:1] == "Y":
+        c = Litecoin(testnet=True)
+    if currency == 'LTC' and testnet[:1] != "Y":
+        c = Litecoin(testnet=False)
+    if currency == 'DOGE' and testnet[:1] == "Y":
+        c = Doge(testnet=True)
+    if currency == 'DOGE' and testnet[:1] != "Y":
+        c = Doge(testnet=False)
 
-addr = privtoaddr(wif)
-if verbose: print ("addr :"+addr)
+    wif = encode_privkey(random_key(), 'wif') #private key (WIF)
+
+    print("* generated new key *")
+
+
+#addr = privtoaddr(wif)
+addr = c.privtoaddr(wif)
 
 print (" ")
 print ('Enter a secret passphrase:')
@@ -55,8 +89,8 @@ print ('Enter passphrase hint (recommended):')
 hint = input()
 
 #image...
-#img = Image.open("background.jpg") #around 1000 x 500
-img = Image.new('RGB', (1000, 500), color = 'red')
+img = Image.open("background.jpg") #around 1000 x 500
+#img = Image.new('RGB', (1000, 500), color = 'red')
 
 img_w, img_h = img.size
 
@@ -94,8 +128,9 @@ draw.text((20, 70), 'ADDRESS:  ' + addr, fcolor, font)
 #print ("fcolor: " + str(type(fcolor)))
 #print ("font: " + str(type(font)))
 
-draw.text((20, (img_h - 100)), 'BIP38 KEY:  ' + str(bip), fcolor, font)
-draw.text((20, (img_h - 50)), 'PASSPHRASE HINT:  ' + hint, fcolor, font)
+draw.text((20, (img_h - 100)), 'BIP38 KEY:  ' + bip.decode("utf-8"), fcolor, font)
+if len(hint) > 0: draw.text((20, (img_h - 50)), 'PASSPHRASE HINT:  ' + hint, fcolor, font)
+
 
 
 img.save(addr+'.jpg', "JPEG")
@@ -104,8 +139,13 @@ print (" ")
 print ("===============================================================")
 print (" Encrypted paper wallet (image file) created.")
 print (" ")
-print ('Bitcoin address:' + addr)
-print ('Encrypted key:' + str(bip))
+
+text = currency
+if testnet[:1] == "Y": text = text + " (testnet)"
+
+print (text + ' address:' + addr)
+print ('Encrypted key:' + bip.decode("utf-8"))
+if verbose: print ("WIF: " +wif)
 print (" ")
 print (" (To decrypt, run 'python unlock-bip38.py')")
 print ("===============================================================")
