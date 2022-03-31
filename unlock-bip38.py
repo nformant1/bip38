@@ -24,3 +24,4 @@ wif = bip38_decrypt(bip, pasw)
 #print ("Address: " + privtoaddr(wif))
 print ("Key: " + wif)
 print (" ")
+

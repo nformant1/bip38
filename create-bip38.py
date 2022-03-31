@@ -20,7 +20,7 @@ print ("===============================================================")
 check = 0
 while check == 0:
     print (" ")
-    print ('Enter crypto currency (BTC, LTC, DOGE) you want to choose (default = BTC):')
+    print ('Enter crypto currency (BTC, LTC, DOGE) you want to choose (BTC/ltc/doge):')
     currency = input().upper()
     if currency in ['BTC', 'LTC', 'DOGE', '']:
         check = 1
@@ -30,7 +30,7 @@ while check == 0:
 if currency == '': currency = 'BTC'
 
 print (" ")
-print ('Do you want to use the testnet? (default = no):')
+print ('Do you want to use the testnet? (N/y):')
 testnet = input().upper()
 
 print (" ")
@@ -113,14 +113,15 @@ img.paste(im2, (int(im_w+(3*offs)),int((img_h-im2_h)/2) ))
 
 #draw labels
 draw = ImageDraw.Draw(img) 
-font = ImageFont.truetype("Arial_Bold.ttf",22)
+# font from https://www.dafont.com/de/monkey.font (marked as 100% free)
+font = ImageFont.truetype("monkey.ttf",26)
 fcolor =  (0,0,0)
 
 #print ("fcolor: " + str(type(fcolor)))
 #print ("font: " + str(type(font)))
 
 
-draw.text((im_w+(3*offs),(img_h-im_h)/2-10), 'BIP38 Key', fcolor, font)
+#draw.text((im_w+(3*offs),(img_h-im_h)/2-10), 'BIP38 Key', fcolor, font)
 draw.text((20, 20), name, fcolor, font)
 draw.text((20, 70), 'ADDRESS:  ' + addr, fcolor, font)
 

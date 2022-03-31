@@ -67,7 +67,6 @@ def bip38_decrypt(encrypted_privkey,passphrase):
     d = base58.b58decode(encrypted_privkey.encode('utf_8'))
     d = d[2:]
     flagbyte = d[0:1]
-    print (flagbyte)
     d = d[1:]
     if flagbyte == b'\xc0':
         compressed = False
