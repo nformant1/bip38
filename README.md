@@ -6,15 +6,11 @@ This implementation supports
 * LTC (mainnet / testnet)
 * DOGE (mainnet / testnet) 
 
-## Known issues
-
-You need to put the font file "Arial_Bold.ttf" into the same directory as the script
-The image needs to be updated
-
 ## Requirements
 
 Will be added here...
 
 ## Example output
 
-Will be added here...
+![](https://github.com/nformant1/bip38/blob/main/DTcogB32jQbGuvUXF4eoDrPU9oEpWw1Lw3.jpg)
+Don't send any money to that wallet!
