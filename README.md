@@ -21,5 +21,5 @@ First to inputs (currency and testnet) have defaults (first choice in upper case
 
 Other optional inputs are marked as "(optional)"
 
-![](https://github.com/nformant1/bip38/blob/main/DTcogB32jQbGuvUXF4eoDrPU9oEpWw1Lw3.jpg)
+![](https://github.com/nformant1/bip38/blob/main/example.jpg)
 Don't send any money to that wallet!
