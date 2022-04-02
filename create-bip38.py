@@ -108,8 +108,8 @@ im2_w, im2_h = im2.size
 
 #draw QRs
 offs = (img_w - im_w - im2_w) / 4
-img.paste(im, (int(offs),int((img_h-im_h)/2)) )
-img.paste(im2, (int(im_w+(3*offs)),int((img_h-im2_h)/2) ))
+img.paste(im, (int(offs*0.6),int((img_h-im_h)/2)) )
+img.paste(im2, (int(im_w+(3.5*offs)) ,int((img_h-im2_h)/2) ))
 
 #draw labels
 draw = ImageDraw.Draw(img) 
@@ -144,8 +144,8 @@ print (" ")
 text = currency
 if testnet[:1] == "Y": text = text + " (testnet)"
 
-print (text + ' address:' + addr)
-print ('Encrypted key:' + bip.decode("utf-8"))
+print (text + ' address: ' + addr)
+print ('Encrypted key: ' + bip.decode("utf-8"))
 if verbose: print ("WIF: " +wif)
 print (" ")
 print (" (To decrypt, run 'python unlock-bip38.py')")
