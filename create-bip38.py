@@ -43,16 +43,22 @@ print (" ")
 print ('Enter a WIF format private key (optional):')
 wif = input()
 
+backgroundJPG = "background.jpg"
+
 if not wif:
     #randomkey = binascii.hexlify(os.urandom(32)).decode()
     if currency == 'BTC' and testnet[:1] == "Y":
         c = Bitcoin(testnet=True)
+        backgroundJPG = "backgroundBTC.jpg"
     if currency == 'BTC' and testnet[:1] != "Y":
         c = Bitcoin(testnet=False)
+        backgroundJPG = "backgroundBTC.jpg"
     if currency == 'LTC' and testnet[:1] == "Y":
         c = Litecoin(testnet=True)
+        backgroundJPG = "backgroundLTC.jpg"
     if currency == 'LTC' and testnet[:1] != "Y":
         c = Litecoin(testnet=False)
+        backgroundJPG = "backgroundLTC.jpg"
     if currency == 'DOGE' and testnet[:1] == "Y":
         c = Doge(testnet=True)
     if currency == 'DOGE' and testnet[:1] != "Y":
@@ -89,7 +95,7 @@ print ('Enter passphrase hint (recommended):')
 hint = input()
 
 #image...
-img = Image.open("background.jpg") #around 1000 x 500
+img = Image.open(backgroundJPG) #around 1000 x 500
 #img = Image.new('RGB', (1000, 500), color = 'red')
 
 img_w, img_h = img.size
