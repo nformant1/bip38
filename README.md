@@ -4,13 +4,13 @@ This is a fork from [decentropy/bip38](https://github.com/decentropy/bip38) upda
 This implementation supports
 * BTC (mainnet / testnet)
 * LTC (mainnet / testnet)
-* DOGE (mainnet / testnet) 
+* DOGE (mainnet / testnet)
 
 # :zap: Requirements
 
 Required packages: (apt-get install) python-dev libssl-dev libjpeg-dev zlib1g-dev libpng-dev libfreetype6-dev
 
-Required modules: (pip install) pycrypto scrypt bitcoin base58 pillow qrcode cryptos
+Required modules: (pip install) pycryptodome scrypt bitcoin base58 pillow qrcode cryptos
 
 (Credit: https://github.com/surg0r/bip38 and https://github.com/decentropy/bip38)
 

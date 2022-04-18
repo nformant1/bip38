@@ -48,7 +48,7 @@ def bip38_encrypt(privkey,passphrase):
     derivedhalf2 = key[32:64]
 
 
-    aes = AES.new(derivedhalf2, 1) # from python2 /Crypto/Cipher/AES.py Default is `MODE_ECB`.
+    aes = AES.new(derivedhalf2, AES.MODE_EAX) # `MODE_ECB` is insecure; this is preferable.
     encryptedhalf1 = aes.encrypt(binascii.unhexlify('%0.32x' % (int(privkey[0:32], 16) ^ int(binascii.hexlify(derivedhalf1[0:16]), 16))))
      
     encryptedhalf2 = aes.encrypt(binascii.unhexlify('%0.32x' % (int(privkey[32:64], 16) ^ int(binascii.hexlify(derivedhalf1[16:32]), 16))))
@@ -86,7 +86,7 @@ def bip38_decrypt(encrypted_privkey,passphrase):
 
     encryptedhalf1 = d[0:16]
     encryptedhalf2 = d[16:32]
-    aes = AES.new(derivedhalf2, 1) # from python2 /Crypto/Cipher/AES.py Default is `MODE_ECB`.
+    aes = AES.new(derivedhalf2, AES.MODE_EAX)
     
     # 4. Decrypt encryptedpart2 using AES256Decrypt to yield the last 8 bytes of seedb and the last 8 bytes of encryptedpart1.
     decryptedhalf2 = aes.decrypt(encryptedhalf2)
