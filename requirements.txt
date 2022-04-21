@@ -1,0 +1,7 @@
+base58==2.1.1
+bitcoin==1.1.42
+Pillow==9.1.0
+qrcode==7.3.1
+scrypt==0.8.20
+pycryptodomex==3.14.1
+cryptos==1.36
