@@ -142,7 +142,7 @@ if len(hint) > 0:
 
 
 os.makedirs("out", exist_ok=True)
-img.save(os.path.join("out", addr + ".jpg"), "JPEG")
+img.save(os.path.join("out", f"{currency}_{addr}.jpg"), "JPEG")
 
 print(" ")
 print("===============================================================")
