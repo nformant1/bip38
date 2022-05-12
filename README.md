@@ -12,7 +12,7 @@ This implementation supports
 
 Required packages: (apt-get install) python-dev libssl-dev libjpeg-dev zlib1g-dev libpng-dev libfreetype6-dev
 
-Required modules: (pip install) pycrypto scrypt bitcoin base58 pillow qrcode cryptos
+Required modules: (pip install) pycryptodomex scrypt bitcoin base58 pillow qrcode cryptos
 
 (Credit: <https://github.com/surg0r/bip38> and <https://github.com/decentropy/bip38>)
 
