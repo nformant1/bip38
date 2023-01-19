@@ -7,7 +7,7 @@ import getpass
 from cryptos import Bitcoin, Litecoin, Doge
 
 
-verbose = 1
+verbose = 0
 
 
 print("===============================================================")
@@ -28,11 +28,12 @@ while check == 0:
 if currency == "":
     currency = "BTC"
 
+
 print(" ")
 print("Do you want to use the testnet? (N/y):")
 testnet = input().upper()
 
-print(" ")
+#print(" ")
 print("Enter description for this wallet (optional):")
 name = input()
 if currency == "":
@@ -45,25 +46,25 @@ wif = input()
 
 backgroundJPG = "assets/background.jpg"
 
-if not wif:
-    # randomkey = binascii.hexlify(os.urandom(32)).decode()
-    if currency == "BTC" and testnet[:1] == "Y":
-        c = Bitcoin(testnet=True)
-        backgroundJPG = "assets/backgroundBTC.jpg"
-    if currency == "BTC" and testnet[:1] != "Y":
-        c = Bitcoin(testnet=False)
-        backgroundJPG = "assets/backgroundBTC.jpg"
-    if currency == "LTC" and testnet[:1] == "Y":
-        c = Litecoin(testnet=True)
-        backgroundJPG = "assets/backgroundLTC.jpg"
-    if currency == "LTC" and testnet[:1] != "Y":
-        c = Litecoin(testnet=False)
-        backgroundJPG = "assets/backgroundLTC.jpg"
-    if currency == "DOGE" and testnet[:1] == "Y":
-        c = Doge(testnet=True)
-    if currency == "DOGE" and testnet[:1] != "Y":
-        c = Doge(testnet=False)
+# randomkey = binascii.hexlify(os.urandom(32)).decode()
+if currency == "BTC" and testnet[:1] != "N":
+    c = Bitcoin(testnet=True)
+    backgroundJPG = "assets/backgroundBTC.jpg"
+if currency == "BTC" and testnet[:1] != "Y":
+    c = Bitcoin(testnet=False)
+    backgroundJPG = "assets/backgroundBTC.jpg"
+if currency == "LTC" and testnet[:1] != "N":
+    c = Litecoin(testnet=True)
+    backgroundJPG = "assets/backgroundLTC.jpg"
+if currency == "LTC" and testnet[:1] != "Y":
+    c = Litecoin(testnet=False)
+    backgroundJPG = "assets/backgroundLTC.jpg"
+if currency == "DOGE" and testnet[:1] != "N":
+    c = Doge(testnet=True)
+if currency == "DOGE" and testnet[:1] != "Y":
+    c = Doge(testnet=False)
 
+if not wif:
     wif = encode_privkey(random_key(), "wif")  # private key (WIF)
 
     print("* generated new key *")
@@ -136,12 +137,13 @@ draw.text((20, 70), "ADDRESS:  " + addr, fcolor, font)
 # print("font: " + str(type(font)))
 
 draw.text((20, (img_h - 100)), "BIP38 KEY:  " +
-          bip.decode("utf-8"), fcolor, font)
+          bip, fcolor, font)
 if len(hint) > 0:
     draw.text((20, (img_h - 50)), "PASSPHRASE HINT:  " + hint, fcolor, font)
 
 
 os.makedirs("out", exist_ok=True)
+#print (os.path.join("out", f"{currency}_{addr}.jpg"))
 img.save(os.path.join("out", f"{currency}_{addr}.jpg"), "JPEG")
 
 print(" ")
@@ -154,7 +156,7 @@ if testnet[:1] == "Y":
     text = text + " (testnet)"
 
 print(text + " address: " + addr)
-print("Encrypted key: " + bip.decode("utf-8"))
+print("Encrypted key: " + bip)
 if verbose:
     print("WIF: " + wif)
 print(" ")
